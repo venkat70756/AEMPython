@@ -1,0 +1,7 @@
+{
+    "scripts": [
+        "create path (sling:OrderedFolder) /content/dam/video-saya",
+        "create path (nt:unstructured) /content/dam/video-saya/jcr:content",
+        "set properties on /content/dam/video-saya/jcr:content\n  set cq:conf{String} to /conf/video-saya\n  set jcr:title{String} to \"VideoSaya\"\nend"
+    ]
+}

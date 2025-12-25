@@ -1,0 +1,6 @@
+{
+  "mobile.resourceTypes": [
+    "video-saya/components/page"
+  ],
+  "README": "Indicate which page resource types should display the mobile emulators."
+}

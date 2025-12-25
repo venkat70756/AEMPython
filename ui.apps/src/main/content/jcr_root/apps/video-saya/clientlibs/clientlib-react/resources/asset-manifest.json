@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/css/main.935b7109.chunk.css",
+    "main.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/main.1a7c662c.chunk.js",
+    "main.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/main.1a7c662c.chunk.js.map",
+    "runtime-main.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/runtime-main.2029ea1b.js",
+    "runtime-main.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/runtime-main.2029ea1b.js.map",
+    "static/js/2.7209fe39.chunk.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/2.7209fe39.chunk.js",
+    "static/js/2.7209fe39.chunk.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/2.7209fe39.chunk.js.map",
+    "static/js/3.3b6a1ea4.chunk.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/3.3b6a1ea4.chunk.js",
+    "static/js/3.3b6a1ea4.chunk.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/3.3b6a1ea4.chunk.js.map",
+    "static/css/4.61b50e66.chunk.css": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/css/4.61b50e66.chunk.css",
+    "static/js/4.05412048.chunk.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/4.05412048.chunk.js",
+    "static/js/4.05412048.chunk.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/4.05412048.chunk.js.map",
+    "static/js/5.2e50da02.chunk.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/5.2e50da02.chunk.js",
+    "static/js/5.2e50da02.chunk.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/5.2e50da02.chunk.js.map",
+    "static/js/6.f0198613.chunk.js": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/6.f0198613.chunk.js",
+    "static/js/6.f0198613.chunk.js.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/6.f0198613.chunk.js.map",
+    "index.html": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/index.html",
+    "static/css/4.61b50e66.chunk.css.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/css/4.61b50e66.chunk.css.map",
+    "static/css/main.935b7109.chunk.css.map": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/css/main.935b7109.chunk.css.map",
+    "static/js/2.7209fe39.chunk.js.LICENSE.txt": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/2.7209fe39.chunk.js.LICENSE.txt",
+    "static/js/3.3b6a1ea4.chunk.js.LICENSE.txt": "/etc.clientlibs/video-saya/clientlibs/clientlib-react/resources/static/js/3.3b6a1ea4.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2029ea1b.js",
+    "static/js/2.7209fe39.chunk.js",
+    "static/css/main.935b7109.chunk.css",
+    "static/js/main.1a7c662c.chunk.js"
+  ]
+}

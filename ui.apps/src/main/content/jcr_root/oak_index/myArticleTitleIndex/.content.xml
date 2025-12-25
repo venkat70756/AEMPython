@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root
+        xmlns:jcr="http://www.jcp.org/jcr/1.0"
+        jcr:primaryType="oak:QueryIndexDefinition"
+        type="lucene"
+        compatVersion="{Long}2"
+        async="async"
+        evaluatePathRestrictions="{Boolean}true"
+        reindex="{Boolean}true" xmlns:myapp="">
+
+    <indexRules jcr:primaryType="nt:unstructured">
+        <myapp:Article jcr:primaryType="nt:unstructured">
+            <properties jcr:primaryType="nt:unstructured">
+                <title
+                        jcr:primaryType="nt:unstructured"
+                        propertyIndex="{Boolean}true"
+                        name="title"/>
+            </properties>
+        </myapp:Article>
+    </indexRules>
+
+</jcr:root>

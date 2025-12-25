@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/conf/video-saya" mode="merge"/>
+    <filter root="/content/video-saya" mode="merge"/>
+    <filter root="/content/dam/video-saya/asset.jpg" mode="merge"/>
+    <filter root="/content/experience-fragments/video-saya" mode="merge"/>
+</workspaceFilter>

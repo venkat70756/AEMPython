@@ -1,0 +1,44 @@
+<sly data-sly-use.commoncontainermodel="${'com.adobe.aem.videosaya.core.models.CustomContainerModel'}" />
+
+<sly data-sly-use.clientLib="/libs/granite/sightly/templates/clientlib.html"
+     data-sly-call="${clientLib.css @ categories='VideoSaya.customContainer'}" />
+
+<div data-sly-test="${commoncontainermodel.containerDropdown=='fullwidth'}" class="major-container padding-0">
+    <sly data-sly-resource="${'centerreponsivegrid' @ resourceType='/libs/wcm/foundation/components/responsivegrid'}">
+    </sly>
+</div>
+
+<div data-sly-test="${commoncontainermodel.containerDropdown=='col-2-col-10-width'}" class="major-container">
+    <div class="row">
+        <div class="col-2 sticky-cont col-sm-12">
+            <sly
+                data-sly-resource="${'SidebarContainer' @ resourceType='/libs/wcm/foundation/components/responsivegrid'}">
+            </sly>
+        </div>
+        <div class="col-10 col-sm-12">
+            <sly
+                data-sly-resource="${'CommonContainer' @ resourceType='/libs/wcm/foundation/components/responsivegrid'}">
+            </sly>
+        </div>
+    </div>
+</div>
+
+<div data-sly-test="${commoncontainermodel.containerDropdown=='col-2-col-7-col-3-width'}" class="major-container">
+    <div class="row">
+        <div class="col-2 sticky-cont col-sm-12">
+            <sly
+                data-sly-resource="${'SidebarContainer' @ resourceType='/libs/wcm/foundation/components/responsivegrid'}">
+            </sly>
+        </div>
+        <div class="col-7 col-sm-12">
+            <sly
+                data-sly-resource="${'CommonContainer' @ resourceType='/libs/wcm/foundation/components/responsivegrid'}">
+            </sly>
+        </div>
+        <div class="col-3 col-sm-12">
+            <sly
+                data-sly-resource="${'PlaylistContainer' @ resourceType='/libs/wcm/foundation/components/responsivegrid'}">
+            </sly>
+        </div>
+    </div>
+</div>
