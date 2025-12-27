@@ -1,126 +1,71 @@
-# Sample AEM project template
+# Python Environment Validation for AEM Maven Build
 
-This is a project template for AEM-based applications. It is intended as a best-practice set of examples as well as a potential starting point to develop your own functionality.
+## Overview
+This documentation outlines the process for validating the Python environment during the Maven build lifecycle for AEM projects. The validation ensures that the required Python version and dependencies are present on the system before any build artifacts are generated or deployment steps are executed.
 
-## Modules
+## Maven Integration
+The Python environment validation is integrated into the Maven build lifecycle via the `pom.xml` file. The validation is executed during the **validate phase**, ensuring that all necessary Python components are verified before proceeding with any build or deployment operations.
 
-The main parts of the template are:
+## OS-Specific Profile Activation
+The `pom.xml` defines OS-specific Maven profiles that are automatically activated based on the operating system in use. This automatic activation eliminates the need for manual profile selection:
 
-* core: Java bundle containing all core functionality like OSGi services, listeners or schedulers, as well as component-related Java code such as servlets or request filters.
-* it.tests: Java based integration tests
-* ui.apps: contains the /apps (and /etc) parts of the project, ie JS&CSS clientlibs, components, and templates
-* ui.content: contains sample content using the components from the ui.apps
-* ui.config: contains runmode specific OSGi configs for the project
-* ui.frontend: an optional dedicated front-end build mechanism (Angular, React or general Webpack project)
-* ui.tests: Selenium based UI tests
-* all: a single content package that embeds all of the compiled modules (bundles and content packages) including any vendor dependencies
-* analyse: this module runs analysis on the project which provides additional validation for deploying into AEMaaCS
+- **Windows Profile**: Activated when running the build on a Windows environment.
+- **Unix Profile**: Activated for macOS, Linux, Docker, or CI/CD pipeline environments.
 
-## How to build
+The correct validation script is invoked automatically based on the OS profile.
 
-To build all the modules run in the project root directory the following command with Maven 3:
+## Validation Script Execution
 
-    mvn clean install
+Each profile utilizes the `exec-maven-plugin` to run the appropriate validation script:
 
-To build all the modules and deploy the `all` package to a local instance of AEM, run in the project root directory the following command:
+### 1. **Windows Environment**
+- **Script**: `check-python.bat`
+- **Execution**: Runs using the Windows command shell (`cmd`)
+- **Validation checks**:
+    - Presence of Python
+    - Exact Python version
+    - Exact pip version
+    - Required Python dependencies
 
-    mvn clean install -PautoInstallSinglePackage
+### 2. **macOS/Linux Environment**
+- **Script**: `check-python.sh`
+- **Execution**: Runs using the shell (`sh`)
+- **Validation checks**:
+    - Same checks as the Windows script, ensuring consistency across all Unix-based systems.
 
-Or to deploy it to a publish instance, run
+## Python Version and Dependency Management
 
-    mvn clean install -PautoInstallSinglePackagePublish
+### Python Version
+Developers must ensure that the exact Python version specified in the respective validation script is installed:
 
-Or alternatively
+- **Windows**: `check-python.bat`
+- **macOS/Linux**: `check-python.sh`
 
-    mvn clean install -PautoInstallSinglePackage -Daem.port=4503
+The Maven build will fail if a different Python version is detected during the validation.
 
-Or to deploy only the bundle to the author, run
+### Python Dependencies
+The required Python dependencies are managed through the `check_deps.py` file, which serves as the single source of truth for Python package versions across all environments.
 
-    mvn clean install -PautoInstallBundle
+- **Dependency Validation**: The build will fail if any required dependencies are missing or mismatched.
+- **Dependency Management**: Developers must ensure that all necessary dependencies are added to `check_deps.py` to maintain consistency across environments.
 
-Or to deploy only a single content package, run in the sub-module directory (i.e `ui.apps`)
+## Adding New Python Dependencies
+To add a new Python package or update existing dependencies:
 
-    mvn clean install -PautoInstallPackage
+1. Modify the `check_deps.py` file to include the new package name and required version.
+2. The validation scripts will automatically enforce these changes across all environments, ensuring that the new dependency is validated during future builds.
 
-## Testing
+## Benefits of this Approach
+- **Environment Consistency**: Ensures all environments (local development, CI/CD, production) are aligned.
+- **Reproducible Builds**: Guarantees that builds are consistent and will behave the same regardless of where they are executed.
+- **Early Detection of Configuration Issues**: Identifies environment mismatches or missing dependencies early in the build process.
+- **Alignment with CI/CD and Production Standards**: Enforces the same Python environment configuration across all stages of development and deployment.
 
-There are three levels of testing contained in the project:
+## Conclusion
+This approach provides a streamlined, automated method to ensure that Python dependencies and versions are consistently validated across different operating systems and environments. By integrating Python environment validation into the Maven build lifecycle, developers can avoid common configuration issues and ensure smooth, reproducible builds.
 
-### Unit tests
+---
 
-This show-cases classic unit testing of the code contained in the bundle. To
-test, execute:
-
-    mvn clean test
-
-### Integration tests
-
-This allows running integration tests that exercise the capabilities of AEM via
-HTTP calls to its API. To run the integration tests, run:
-
-    mvn clean verify -Plocal
-
-Test classes must be saved in the `src/main/java` directory (or any of its
-subdirectories), and must be contained in files matching the pattern `*IT.java`.
-
-The configuration provides sensible defaults for a typical local installation of
-AEM. If you want to point the integration tests to different AEM author and
-publish instances, you can use the following system properties via Maven's `-D`
-flag.
-
-| Property | Description | Default value |
-| --- | --- | --- |
-| `it.author.url` | URL of the author instance | `http://localhost:4502` |
-| `it.author.user` | Admin user for the author instance | `admin` |
-| `it.author.password` | Password of the admin user for the author instance | `admin` |
-| `it.publish.url` | URL of the publish instance | `http://localhost:4503` |
-| `it.publish.user` | Admin user for the publish instance | `admin` |
-| `it.publish.password` | Password of the admin user for the publish instance | `admin` |
-
-The integration tests in this archetype use the [AEM Testing
-Clients](https://github.com/adobe/aem-testing-clients) and showcase some
-recommended [best
-practices](https://github.com/adobe/aem-testing-clients/wiki/Best-practices) to
-be put in use when writing integration tests for AEM.
-
-## Static Analysis
-
-The `analyse` module performs static analysis on the project for deploying into AEMaaCS. It is automatically
-run when executing
-
-    mvn clean install
-
-from the project root directory. Additional information about this analysis and how to further configure it
-can be found here https://github.com/adobe/aemanalyser-maven-plugin
-
-### UI tests
-
-They will test the UI layer of your AEM application using Selenium technology. 
-
-To run them locally:
-
-    mvn clean verify -Pui-tests-local-execution
-
-This default command requires:
-* an AEM author instance available at http://localhost:4502 (with the whole project built and deployed on it, see `How to build` section above)
-* Chrome browser installed at default location
-
-Check README file in `ui.tests` module for more details.
-
-## ClientLibs
-
-The frontend module is made available using an [AEM ClientLib](https://helpx.adobe.com/experience-manager/6-5/sites/developing/using/clientlibs.html). When executing the NPM build script, the app is built and the [`aem-clientlib-generator`](https://github.com/wcm-io-frontend/aem-clientlib-generator) package takes the resulting build output and transforms it into such a ClientLib.
-
-A ClientLib will consist of the following files and directories:
-
-- `css/`: CSS files which can be requested in the HTML
-- `css.txt` (tells AEM the order and names of files in `css/` so they can be merged)
-- `js/`: JavaScript files which can be requested in the HTML
-- `js.txt` (tells AEM the order and names of files in `js/` so they can be merged
-- `resources/`: Source maps, non-entrypoint code chunks (resulting from code splitting), static assets (e.g. icons), etc.
-
-## Maven settings
-
-The project comes with the auto-public repository configured. To setup the repository in your Maven settings, refer to:
-
-    http://helpx.adobe.com/experience-manager/kb/SetUpTheAdobeMavenRepository.html
+### Author
+**Yeti Venkatrao**  
+AEM Developer
