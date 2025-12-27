@@ -1,62 +1,71 @@
-# Frontend Build: React App
+# Python Environment Validation for AEM Maven Build
 
-This project was bootstrapped with [`create-react-app`](https://github.com/facebook/create-react-app).
+## Overview
+This documentation outlines the process for validating the Python environment during the Maven build lifecycle for AEM projects. The validation ensures that the required Python version and dependencies are present on the system before any build artifacts are generated or deployment steps are executed.
 
-This application is built to consume the AEM model of a site. It will automatically generate the layout using the helper components from the [`@adobe/aem-react-editable-components`](https://www.npmjs.com/package/@adobe/aem-react-editable-components) package.
+## Maven Integration
+The Python environment validation is integrated into the Maven build lifecycle via the `pom.xml` file. The validation is executed during the **validate phase**, ensuring that all necessary Python components are verified before proceeding with any build or deployment operations.
 
-## Scripts
+## OS-Specific Profile Activation
+The `pom.xml` defines OS-specific Maven profiles that are automatically activated based on the operating system in use. This automatic activation eliminates the need for manual profile selection:
 
-In the project directory, you can run the following commands:
+- **Windows Profile**: Activated when running the build on a Windows environment.
+- **Unix Profile**: Activated for macOS, Linux, Docker, or CI/CD pipeline environments.
 
-### `npm start`
+The correct validation script is invoked automatically based on the OS profile.
 
-Runs the app in development mode by proxying the JSON model from a local AEM instance running at http://localhost:4502. This assumes that the entire project has been deployed to AEM at least once (`mvn clean install -PautoInstallPackage` **in the project root**).
+## Validation Script Execution
 
-After running `npm start` **in the `ui.frontend` directory**, your app will be automatically opened in your browser (at path http://localhost:3000/content/video-saya/us/en/home.html). If you make edits, the page will reload.
+Each profile utilizes the `exec-maven-plugin` to run the appropriate validation script:
 
-If you are getting errors related to CORS, you might want to configure AEM as follows:
+### 1. **Windows Environment**
+- **Script**: `check-python.bat`
+- **Execution**: Runs using the Windows command shell (`cmd`)
+- **Validation checks**:
+   - Presence of Python
+   - Exact Python version
+   - Exact pip version
+   - Required Python dependencies
 
-1. Navigate to the Configuration Manager (http://localhost:4502/system/console/configMgr)
-2. Open the configuration for "Adobe Granite Cross-Origin Resource Sharing Policy"
-3. Create a new configuration with the following additional values:
-   - Allowed Origins: http://localhost:3000
-   - Supported Headers: Authorization
-   - Allowed Methods: OPTIONS
+### 2. **macOS/Linux Environment**
+- **Script**: `check-python.sh`
+- **Execution**: Runs using the shell (`sh`)
+- **Validation checks**:
+   - Same checks as the Windows script, ensuring consistency across all Unix-based systems.
 
-### `npm test`
+## Python Version and Dependency Management
 
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Python Version
+Developers must ensure that the exact Python version specified in the respective validation script is installed:
 
-### `npm run build`
+- **Windows**: `check-python.bat`
+- **macOS/Linux**: `check-python.sh`
 
-Builds the app for production to the `build` folder. It bundles React in production mode and optimizes the build for the best performance. See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The Maven build will fail if a different Python version is detected during the validation.
 
-Furthermore, an AEM ClientLib is generated from the app using the [`aem-clientlib-generator`](https://github.com/wcm-io-frontend/aem-clientlib-generator) package.
+### Python Dependencies
+The required Python dependencies are managed through the `check_deps.py` file, which serves as the single source of truth for Python package versions across all environments.
 
-## Browser Support
+- **Dependency Validation**: The build will fail if any required dependencies are missing or mismatched.
+- **Dependency Management**: Developers must ensure that all necessary dependencies are added to `check_deps.py` to maintain consistency across environments.
 
-By default, this project uses [Browserslist](https://github.com/browserslist/browserslist)'s `defaults` option to identify target browsers. Additionally, it includes polyfills for modern language features to support older browsers (e.g. Internet Explorer 11). If supporting such browsers isn't a requirement, the polyfill dependencies and imports can be removed.
+## Adding New Python Dependencies
+To add a new Python package or update existing dependencies:
 
-## Custom Model Client
+1. Modify the `check_deps.py` file to include the new package name and required version.
+2. The validation scripts will automatically enforce these changes across all environments, ensuring that the new dependency is validated during future builds.
 
-For scenarios where the react application doesn't have access to the model json payload a request to AEM has to be made to fetch it. This may require a custom model client that can provide additional capabilities over the default one provided via the [`aem-spa-page-model-manager`](https://github.com/adobe/aem-spa-page-model-manager/blob/master/src/ModelClient.ts) such as authentication.
+## Benefits of this Approach
+- **Environment Consistency**: Ensures all environments (local development, CI/CD, production) are aligned.
+- **Reproducible Builds**: Guarantees that builds are consistent and will behave the same regardless of where they are executed.
+- **Early Detection of Configuration Issues**: Identifies environment mismatches or missing dependencies early in the build process.
+- **Alignment with CI/CD and Production Standards**: Enforces the same Python environment configuration across all stages of development and deployment.
 
-## Code Splitting
+## Conclusion
+This approach provides a streamlined, automated method to ensure that Python dependencies and versions are consistently validated across different operating systems and environments. By integrating Python environment validation into the Maven build lifecycle, developers can avoid common configuration issues and ensure smooth, reproducible builds.
 
-The React app is configured to make use of [code splitting](https://webpack.js.org/guides/code-splitting) by default. When building the app for production, the code will be output in several chunks:
+---
 
-```sh
-$ ls build/static/js
-2.5b77f553.chunk.js
-2.5b77f553.chunk.js.map
-main.cff1a559.chunk.js
-main.cff1a559.chunk.js.map
-runtime~main.a8a9905a.js
-runtime~main.a8a9905a.js.map
-```
-
-Loading chunks only when they are required can improve the app performance significantly.
-
-To get this feature to work with AEM, the app needs to be able to identify which JS and CSS files need to be requested from the HTML generated by AEM. This can be achieved using the `"entrypoints"` key in the `asset-manifest.json` file: The file is parsed in `clientlib.config.js` and only the entrypoint files are bundled into the ClientLib. The remaining files are placed in the ClientLib's `resources` directory and will be requested dynamically and therefore only loaded when they are actually needed.
-
-
+### Author
+**Yeti Venkatrao**  
+AEM Developer
